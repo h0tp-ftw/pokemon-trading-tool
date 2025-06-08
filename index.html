@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokémon Collection Trader</title>
+    <style>
+    /* Updated background with Pokémon theme */
+    body {
+      background: 
+        linear-gradient(45deg, 
+          rgba(255, 203, 5, 0.1) 25%, 
+          transparent 25%,
+          transparent 75%, 
+          rgba(59, 76, 202, 0.1) 75%),
+        linear-gradient(45deg, 
+          rgba(255, 203, 5, 0.1) 25%, 
+          transparent 25%,
+          transparent 75%, 
+          rgba(59, 76, 202, 0.1) 75%),
+        var(--color-background);
+      background-size: 60px 60px;
+      background-position: 0 0, 30px 30px;
+    }
+
+    /* Floating Pokéballs animation */
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+
+    .pokeball-bg {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      opacity: 0.1;
+      z-index: -1;
+      animation: float 8s infinite linear;
+      background: 
+        radial-gradient(circle at 50% 45%, 
+          var(--color-text) 45%,
+          transparent 45%),
+        linear-gradient(to bottom, 
+          var(--color-primary) 0 47%,
+          var(--color-text) 47% 53%,
+          var(--color-background) 53% 100%);
+      border-radius: 50%;
+    }
+
+    /* Fixed theme toggle functionality */
+    :root {
+      --color-primary: #FFCB05; /* Pokémon Yellow */
+      --color-secondary: #3B4CCA; /* Pokémon Blue */
+      --color-accent: #FF0000; /* Pokémon Red */
+      --color-background: #ffffff;
+      --color-text: #2d3748;
+      --color-border: rgba(0, 0, 0, 0.1);
+    }
+
+    [data-theme="dark"] {
+      --color-background: #1a202c;
+      --color-text: #f7fafc;
+      --color-border: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Add floating Pokéballs -->
+  <div class="pokeball-bg" style="top: 10%; left: 20%"></div>
+  <div class="pokeball-bg" style="top: 70%; left: 80%"></div>
+  <div class="pokeball-bg" style="top: 40%; left: 50%"></div>
+  
+  <!-- Pokemon-themed animated background -->
+  <div class="background-animation">
+    <div class="pokeball-float pokeball-1"></div>
+    <div class="pokeball-float pokeball-2"></div>
+    <div class="pokeball-float pokeball-3"></div>
+    <div class="pokeball-float pokeball-4"></div>
+    <div class="pokeball-float pokeball-5"></div>
+    <div class="type-particle fire-particle"></div>
+    <div class="type-particle water-particle"></div>
+    <div class="type-particle grass-particle"></div>
+    <div class="type-particle electric-particle"></div>
+  </div>
+
+  <!-- Updated theme toggle button -->
+  <button id="themeToggle" class="theme-toggle">
+    <span class="theme-icon">🌙</span>
+  </button>
+
+  <div class="container">
+    <header class="header">
+      <div class="pokeball-container">
+        <div class="pokeball">
+          <div class="pokeball-top"></div>
+          <div class="pokeball-middle"></div>
+          <div class="pokeball-bottom"></div>
+          <div class="pokeball-center">
+            <div class="pokeball-inner"></div>
+          </div>
+        </div>
+      </div>
+      <h1 class="title">Pokémon Collection Trader</h1>
+      <p class="subtitle">Share your export code to quickly find Pokemon for trading!</p>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="generate">
+        <span class="tab-icon">📊</span>
+        Generate Export
+      </button>
+      <button class="tab-btn" data-tab="compare">
+        <span class="tab-icon">🔄</span>
+        Compare Collections
+      </button>
+      <button class="tab-btn" data-tab="results">
+        <span class="tab-icon">🏆</span>
+        View Results
+      </button>
+    </nav>
+
+    <!-- Tab Content -->
+    <main class="tab-content">
+      <!-- Generate Export Tab -->
+      <section id="generate-tab" class="tab-pane active">
+        <div class="glass-card">
+          <div class="card-header">
+            <h2>Process Your Collection</h2>
+            <p>Upload your mypokemon.json file to process here</p>
+          </div>
+          <div class="card-body">
+            <div class="file-upload-zone">
+              <input type="file" id="fileInput" accept=".json" class="file-input"/>
+              <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <p class="upload-text">Click to choose file or drag & drop</p>
+                <span id="fileName" class="file-name">No file chosen</span>
+              </div>
+            </div>
+            
+            <div id="processingResults" class="processing-results hidden">
+              <div class="stats-grid">
+                <div class="stat-card total">
+                  <div class="stat-icon">🎯</div>
+                  <div class="stat-content">
+                    <h3>Total Pokémon</h3>
+                    <span id="totalCount" class="stat-number">0</span>
+                  </div>
+                </div>
+                <div class="stat-card duplicates">
+                  <div class="stat-icon">👥</div>
+                  <div class="stat-content">
+                    <h3>Duplicates</h3>
+                    <span id="duplicatesCount" class="stat-number">0</span>
+                  </div>
+                </div>
+                <div class="stat-card missing">
+                  <div class="stat-icon">🔍</div>
+                  <div class="stat-content">
+                    <h3>Missing</h3>
+                    <span id="missingCount" class="stat-number">0</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="export-section">
+                <div class="export-card">
+                  <h3>🚀 Combined Export</h3>
+                  <p>Share this compact code with your trading partner</p>
+                  <div class="export-options">
+                    <label class="checkbox-label">
+                      <input type="checkbox" id="compactMode" checked>
+                      <span class="checkmark"></span>
+                      Compact format (recommended)
+                    </label>
+                  </div>
+                  <textarea id="combinedExport" class="export-textarea" readonly></textarea>
+                  <div class="button-group">
+                    <button id="copyCombined" class="btn btn-primary">
+                      <span class="btn-icon">📋</span>
+                      Copy to Clipboard
+                    </button>
+                    <button id="downloadCombined" class="btn btn-secondary">
+                      <span class="btn-icon">⬇️</span>
+                      Download File
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Compare Collections Tab -->
+      <section id="compare-tab" class="tab-pane">
+        <div class="glass-card">
+          <div class="card-header">
+            <h2>Import & Compare</h2>
+            <p>Paste your export and your partner's export to find opportunities</p>
+          </div>
+          <div class="card-body">
+            <div class="comparison-grid">
+              <div class="import-section">
+                <h3>🟢 Your Export</h3>
+                <div class="form-group">
+                  <label class="form-label">Your Combined Export</label>
+                  <textarea id="yourCombined" class="form-control" placeholder="Paste your export here..."></textarea>
+                </div>
+              </div>
+              <div class="import-section">
+                <h3>🔵 Partner's Export</h3>
+                <div class="form-group">
+                  <label class="form-label">Partner's Combined Export</label>
+                  <textarea id="partnerCombined" class="form-control" placeholder="Paste partner's export here..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="comparison-actions">
+              <button id="analyzeComparison" class="btn btn-primary btn-lg">
+                <span class="btn-icon">🔬</span>
+                Analyze Trading Opportunities
+              </button>
+              <button id="clearComparison" class="btn btn-outline">
+                <span class="btn-icon">🗑️</span>
+                Clear All Fields
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Tab -->
+      <section id="results-tab" class="tab-pane">
+        <div class="glass-card">
+          <div class="card-header">
+            <h2>Trading Opportunities</h2>
+            <p>Potential trades organized by generation</p>
+          </div>
+          <div class="card-body">
+            <!-- Results Controls -->
+            <div class="results-controls">
+              <div class="view-toggle">
+                <button id="viewOffers" class="view-btn active">You Can Offer</button>
+                <button id="viewWants" class="view-btn">You Want</button>
+              </div>
+              <div class="display-options">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="useGifs" checked>
+                  <span class="checkmark"></span>
+                  Use animated sprites
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="expandAll">
+                  <span class="checkmark"></span>
+                  Expand all generations
+                </label>
+              </div>
+            </div>
+
+            <div id="resultsContent" class="results-content">
+              <div class="empty-state">
+                <div class="empty-icon">💫</div>
+                <p>No comparison results yet. Use the "Compare Collections" tab to analyze trading opportunities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>Made with love by <span id="creatorName" class="creator-name">h0tp and Peace</span> ✨</p>
+  </footer>
+
+  <!-- Loading Animation -->
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-spinner">
+      <div class="pokeball-spinner">
+        <div class="pokeball-top"></div>
+        <div class="pokeball-bottom"></div>
+        <div class="pokeball-center"></div>
+      </div>
+      <p>Processing your collection...</p>
+    </div>
+  </div>
+
+  <!-- Success Toast -->
+  <div id="toast" class="toast hidden">
+    <span id="toastMessage"></span>
+  </div>
+
+  <script src="app.js"></script>
+
+</body>
+</html>
