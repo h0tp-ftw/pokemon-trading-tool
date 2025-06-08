@@ -1,68 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <title>Pokémon Collection Trader</title>
-    <style>
-    /* Updated background with Pokémon theme */
-    body {
-      background: 
-        linear-gradient(45deg, 
-          rgba(255, 203, 5, 0.1) 25%, 
-          transparent 25%,
-          transparent 75%, 
-          rgba(59, 76, 202, 0.1) 75%),
-        linear-gradient(45deg, 
-          rgba(255, 203, 5, 0.1) 25%, 
-          transparent 25%,
-          transparent 75%, 
-          rgba(59, 76, 202, 0.1) 75%),
-        var(--color-background);
-      background-size: 60px 60px;
-      background-position: 0 0, 30px 30px;
-    }
-
-    /* Floating Pokéballs animation */
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
-    }
-
-    .pokeball-bg {
-      position: fixed;
-      width: 50px;
-      height: 50px;
-      opacity: 0.1;
-      z-index: -1;
-      animation: float 8s infinite linear;
-      background: 
-        radial-gradient(circle at 50% 45%, 
-          var(--color-text) 45%,
-          transparent 45%),
-        linear-gradient(to bottom, 
-          var(--color-primary) 0 47%,
-          var(--color-text) 47% 53%,
-          var(--color-background) 53% 100%);
-      border-radius: 50%;
-    }
-
-    /* Fixed theme toggle functionality */
-    :root {
-      --color-primary: #FFCB05; /* Pokémon Yellow */
-      --color-secondary: #3B4CCA; /* Pokémon Blue */
-      --color-accent: #FF0000; /* Pokémon Red */
-      --color-background: #ffffff;
-      --color-text: #2d3748;
-      --color-border: rgba(0, 0, 0, 0.1);
-    }
-
-    [data-theme="dark"] {
-      --color-background: #1a202c;
-      --color-text: #f7fafc;
-      --color-border: rgba(255, 255, 255, 0.1);
-    }
-  </style>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,26 +10,55 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Add floating Pokéballs -->
-  <div class="pokeball-bg" style="top: 10%; left: 20%"></div>
-  <div class="pokeball-bg" style="top: 70%; left: 80%"></div>
-  <div class="pokeball-bg" style="top: 40%; left: 50%"></div>
-  
-  <!-- Pokemon-themed animated background -->
-  <div class="background-animation">
-    <div class="pokeball-float pokeball-1"></div>
-    <div class="pokeball-float pokeball-2"></div>
-    <div class="pokeball-float pokeball-3"></div>
-    <div class="pokeball-float pokeball-4"></div>
-    <div class="pokeball-float pokeball-5"></div>
-    <div class="type-particle fire-particle"></div>
-    <div class="type-particle water-particle"></div>
-    <div class="type-particle grass-particle"></div>
-    <div class="type-particle electric-particle"></div>
+  <!-- Enhanced Animated Background -->
+  <div class="background-layers">
+    <!-- Color Gradient Layer -->
+    <div class="gradient-background">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+      <div class="gradient-orb orb-4"></div>
+      <div class="gradient-orb orb-5"></div>
+    </div>
+    
+    <!-- Hidden Pokémon Silhouettes -->
+    <div class="pokemon-silhouettes">
+      <div class="pokemon-silhouette pikachu-silhouette"></div>
+      <div class="pokemon-silhouette charizard-silhouette"></div>
+      <div class="pokemon-silhouette blastoise-silhouette"></div>
+      <div class="pokemon-silhouette venusaur-silhouette"></div>
+      <div class="pokemon-silhouette mew-silhouette"></div>
+      <div class="pokemon-silhouette eevee-silhouette"></div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+      <div class="pokeball-float pokeball-1"></div>
+      <div class="pokeball-float pokeball-2"></div>
+      <div class="pokeball-float pokeball-3"></div>
+      <div class="pokeball-float pokeball-4"></div>
+      <div class="pokeball-float pokeball-5"></div>
+      <div class="pokeball-float pokeball-6"></div>
+    </div>
+    
+    <!-- Type Particles -->
+    <div class="type-particles">
+      <div class="type-particle fire-particle"></div>
+      <div class="type-particle water-particle"></div>
+      <div class="type-particle grass-particle"></div>
+      <div class="type-particle electric-particle"></div>
+      <div class="type-particle psychic-particle"></div>
+      <div class="type-particle dragon-particle"></div>
+      <div class="type-particle fairy-particle"></div>
+      <div class="type-particle ghost-particle"></div>
+    </div>
+    
+    <!-- Subtle Pattern Overlay -->
+    <div class="pattern-overlay"></div>
   </div>
 
-  <!-- Updated theme toggle button -->
-  <button id="themeToggle" class="theme-toggle">
+  <!-- Theme Toggle Button -->
+  <button id="themeToggle" class="theme-toggle" aria-label="Toggle light/dark mode">
     <span class="theme-icon">🌙</span>
   </button>
 
@@ -299,6 +268,5 @@
   </div>
 
   <script src="app.js"></script>
-
 </body>
 </html>
